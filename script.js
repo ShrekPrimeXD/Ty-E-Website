@@ -7,7 +7,9 @@ const projetsParFiliere = {
     { titre: "REDRESSEUR DIODE", lien: "https://www.tinkercad.com/things/9DSqqfoTbny-redresseur-diode" }
   ],
   ciel: [
-    { titre: "Feux tricolore", lien: "https://www.tinkercad.com/things/3xvFANLNDCH-amazing-hango-albar",
+    {
+      titre: "Feux tricolore",
+      lien: "https://www.tinkercad.com/things/3xvFANLNDCH-amazing-hango-albar",
       code: `// Feux Tricolore Arduino
 int ledRouge = 10;
 int ledOrange = 9;
@@ -29,8 +31,74 @@ void loop() {
   digitalWrite(ledVerte, HIGH);
   delay(3000);
   digitalWrite(ledVerte, LOW);
-}`}
-    // autres projets ...
+}`
+    },
+    {
+      titre: "Allumage LED",
+      lien: "https://www.tinkercad.com/things/1UpGT1sjzcR-allumage-led",
+      code: `const int led = 13;
+
+void setup() {
+  pinMode(led, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(led, HIGH);
+  delay(500);
+  digitalWrite(led, LOW);
+  delay(500);
+}`
+    },
+    {
+      titre: "Capteur Ultrason",
+      lien: "https://www.tinkercad.com/things/elsRRyCBrV7-neat-crift-sango",
+      code: `const int TRIGGER_PIN = 2;
+const int ECHO_PIN = 3;
+const float SOUND_SPEED = 0.343;
+const unsigned long MEASURE_TIMEOUT = 25000;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(TRIGGER_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  digitalWrite(TRIGGER_PIN, LOW);
+}
+
+void loop() {
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGER_PIN, LOW);
+  long measure = pulseIn(ECHO_PIN, HIGH, MEASURE_TIMEOUT);
+  float distance_mm = measure * 0.5 * SOUND_SPEED;
+  Serial.print("Distance : ");
+  Serial.print(distance_mm);
+  Serial.print(" mm (");
+  Serial.print(distance_mm / 10.0);
+  Serial.print(" cm, ");
+  Serial.print(distance_mm / 1000.0);
+  Serial.println(" m)");
+  delay(200);
+}`
+    },
+    {
+      titre: "Bouton + Buzzer",
+      lien: "https://www.tinkercad.com/things/dkqLm6Srjgs-funky-curcan",
+      code: `int bouton = 8;
+int buzzer = 7;
+
+void setup() {
+  pinMode(bouton, INPUT);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+  if(digitalRead(bouton) == HIGH) {
+    tone(buzzer, 1000);
+  } else {
+    noTone(buzzer);
+  }
+}`
+    }
   ]
 };
 
@@ -60,12 +128,14 @@ function renderProjects(filiere) {
 
   projetsParFiliere[filiere].forEach(p => {
     const box = document.createElement("div");
-    box.className = "project fade-zoom-up";
+    box.className = "project";
 
+    // Titre
     const title = document.createElement("h3");
     title.textContent = p.titre;
     title.classList.add("multicolor");
 
+    // Lien
     const link = document.createElement("a");
     link.href = p.lien;
     link.target = "_blank";
@@ -73,6 +143,7 @@ function renderProjects(filiere) {
 
     box.append(title, link);
 
+    // Code si présent
     if (p.code) {
       const btn = document.createElement("button");
       btn.textContent = "Afficher le code";
@@ -132,7 +203,8 @@ document.getElementById("searchBox").addEventListener("input", e => {
  *******************/
 const scrollBtn = document.getElementById("scrollTopBtn");
 window.addEventListener("scroll", () => {
-  scrollBtn.style.display = window.scrollY > 100 ? "block" : "none";
+  scrollBtn.style.display =
+    window.scrollY > 100 ? "block" : "none";
 });
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -146,6 +218,7 @@ emojiContainer.className = "emoji-bg";
 document.body.appendChild(emojiContainer);
 
 const emojis = ["📁", "🔒"];
+
 function createEmoji() {
   const e = document.createElement("div");
   e.className = "emoji";
@@ -157,24 +230,6 @@ function createEmoji() {
   emojiContainer.appendChild(e);
   setTimeout(() => e.remove(), parseFloat(e.style.animationDuration) * 1000);
 }
+
+// Densité parfaite
 setInterval(createEmoji, 120);
-
-/*******************
- *   FADE + ZOOM + SLIDE-UP CINEMATIQUE
- *******************/
-const fadeElements = document.querySelectorAll('.fade-zoom-up');
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const rect = entry.target.getBoundingClientRect();
-      const delay = rect.top * 0.3; // délai basé sur position verticale
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, delay);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.2 });
-
-fadeElements.forEach(el => observer.observe(el));
