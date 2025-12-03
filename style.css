@@ -37,20 +37,16 @@ h1 {
   margin-top: 4px;
 }
 
-/* Cartes principales semi-transparentes */
 .card {
   background: rgba(30, 30, 30, 0.5);
-  /* 50% transparent */
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   padding: 10px;
   margin-top: 12px;
 }
 
-/* Sous-projets opaques pour lisibilité */
 .project {
   background: #2a2a2a;
-  /* opaque */
   border-radius: 10px;
   padding: 8px;
   margin-bottom: 16px;
@@ -84,23 +80,10 @@ pre {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-pre .keyword {
-  color: #569cd6;
-  font-weight: bold;
-}
-
-pre .function {
-  color: #dcdcaa;
-}
-
-pre .comment {
-  color: #6a9955;
-  font-style: italic;
-}
-
-pre .number {
-  color: #b5cea8;
-}
+pre .keyword { color: #569cd6; font-weight: bold; }
+pre .function { color: #dcdcaa; }
+pre .comment { color: #6a9955; font-style: italic; }
+pre .number { color: #b5cea8; }
 
 .multicolor {
   background: linear-gradient(270deg, #ff3cac, #784ba0, #2b86c5, #20bf55, #f9c846, #ff3cac);
@@ -111,17 +94,9 @@ pre .number {
 }
 
 @keyframes rainbow {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 button {
@@ -192,17 +167,22 @@ button:hover {
 }
 
 @keyframes fall {
-  0% {
-    transform: translateY(-50px) rotate(0deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0.7; }
+}
 
-  10% {
-    opacity: 1;
-  }
+/* ------------------------- */
+/* FADE + ZOOM + SLIDE-UP */
+/* ------------------------- */
+.fade-zoom-up {
+  opacity: 0;
+  transform: scale(0.85) translateY(25px);
+  will-change: transform, opacity;
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
 
-  100% {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0.7;
-  }
+.fade-zoom-up.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
