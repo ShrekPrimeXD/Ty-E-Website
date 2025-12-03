@@ -1,10 +1,8 @@
 const projetsParFiliere = {
   melec: [
-    {
-      titre: "LECTURE SIGNAUX",
-      lien: "https://www.tinkercad.com/things/hqeFFlHGALv-lecture-signaux/editel?returnTo=%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=TAdjYkHjqIRVWNDTclaUrcWTGF_LwzDM-f0_Vrn0X40"
-      // Pas de code pour Melec
-    }
+    {titre:"Circuit simple Melec", lien:"https://www.tinkercad.com", code:`// Code exemple Melec
+void setup() {}
+void loop() {}`}
   ],
   ciel: [
     {titre:"Feux tricolore", lien:"https://www.tinkercad.com/things/3xvFANLNDCH-amazing-hango-albar", code:`// Feux Tricolore Arduino
@@ -86,4 +84,82 @@ void loop() {
   ]
 };
 
-// Le reste du script reste identique...
+function highlightCode(code){
+  const comments = /(\/\/.*)/g;
+  const keywords = /\b(void|int|float|const|long|pinMode|digitalWrite|delay|Serial|tone|noTone|INPUT|OUTPUT|HIGH|LOW)\b/g;
+  const functions = /\b(setup|loop|pulseIn|begin)\b/g;
+  const numbers = /\b\d+(\.\d+)?\b/g;
+  return code
+    .replace(comments,'<span class="comment">$1</span>')
+    .replace(keywords,'<span class="keyword">$1</span>')
+    .replace(functions,'<span class="function">$1</span>')
+    .replace(numbers,'<span class="number">$&</span>');
+}
+
+function renderProjects(filiere){
+  const container=document.getElementById(filiere+"-list");
+  container.innerHTML="";
+  const fragment = document.createDocumentFragment();
+
+  projetsParFiliere[filiere].forEach(p=>{
+    const box=document.createElement("div"); box.className="project";
+
+    const title=document.createElement("h3"); 
+    title.textContent=p.titre; 
+    title.classList.add("multicolor");
+
+    const link=document.createElement("a"); 
+    link.href=p.lien; 
+    link.target="_blank"; 
+    link.textContent="🔗 Ouvrir le montage";
+
+    const btn=document.createElement("button"); 
+    btn.textContent="Afficher le code";
+
+    const copy=document.createElement("button"); 
+    copy.textContent="📋 Copier"; 
+    copy.style.display='none';
+
+    const pre=document.createElement("pre"); 
+    pre.style.display="none"; 
+    pre.innerHTML=highlightCode(p.code);
+
+    btn.onclick=()=>{
+      const show=pre.style.display==="none";
+      pre.style.display=show?"block":"none";
+      copy.style.display=show?"inline-block":"none";
+      btn.textContent=show?"Masquer le code":"Afficher le code";
+    };
+
+    copy.onclick=()=>{
+      navigator.clipboard.writeText(p.code);
+      copy.textContent="✔ Copié";
+      setTimeout(()=>copy.textContent="📋 Copier",1200);
+    };
+
+    const buttonRow=document.createElement('div');
+    buttonRow.style.display='flex';
+    buttonRow.style.gap='10px';
+    buttonRow.append(btn, copy);
+
+    box.append(title, link, buttonRow, pre);
+    fragment.appendChild(box);
+  });
+
+  container.appendChild(fragment);
+}
+
+renderProjects("melec");
+renderProjects("ciel");
+
+document.getElementById("searchBox").addEventListener("input", e=>{
+  const term=e.target.value.toLowerCase();
+  document.querySelectorAll(".project").forEach(p=>{
+    const t=p.querySelector("h3").textContent.toLowerCase();
+    p.style.display=t.includes(term)?"block":"none";
+  });
+});
+
+const scrollBtn=document.getElementById("scrollTopBtn");
+window.onscroll=()=>{scrollBtn.style.display=(document.body.scrollTop>100 || document.documentElement.scrollTop>100)?"block":"none";};
+scrollBtn.addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
