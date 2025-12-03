@@ -2,7 +2,7 @@ const projetsParFiliere = {
   melec: [
     {
       titre: "LECTURE SIGNAUX",
-      lien: "https://www.tinkercad.com/things/hqeFFlHGALv-lecture-signaux"
+      lien: "https://www.tinkercad.com/things/hqeFFlHGALv-lecture-signaux/editel?returnTo=%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=TAdjYkHjqIRVWNDTclaUrcWTGF_LwzDM-f0_Vrn0X40"
       // Pas de code pour Melec
     }
   ],
@@ -41,7 +41,7 @@ void loop() {
   digitalWrite(led, LOW);
   delay(500);
 }`},
-    {titre:"Capteur Ultrason", https://www.tinkercad.com/things/elsRRyCBrV7-capteur-ultrason", code:`const int TRIGGER_PIN = 2;
+    {titre:"Capteur Ultrason", lien:"https://www.tinkercad.com/things/elsRRyCBrV7-neat-crift-sango", code:`const int TRIGGER_PIN = 2;
 const int ECHO_PIN = 3;
 const float SOUND_SPEED = 0.343;
 const unsigned long MEASURE_TIMEOUT = 25000;
@@ -176,6 +176,3 @@ window.onscroll = () => {
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({top: 0, behavior: "smooth"});
 });
-
-
-
