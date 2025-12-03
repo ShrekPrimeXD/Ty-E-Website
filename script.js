@@ -2,7 +2,7 @@ const projetsParFiliere = {
   melec: [
     {
       titre: "LECTURE SIGNAUX",
-      lien: "https://www.tinkercad.com/things/hqeFFlHGALv-lecture-signaux/editel?returnTo=%2Fdashboard%2Fdesigns%2Fcircuits&sharecode=TAdjYkHjqIRVWNDTclaUrcWTGF_LwzDM-f0_Vrn0X40"
+      lien: "https://www.tinkercad.com/things/4BP9wfD0XwW/editel?sharecode=7AE6cK_7rCuShZob72CJPBENq22jUe7SUyCy966KgmU"
       // Pas de code pour Melec
     }
   ],
@@ -176,3 +176,4 @@ window.onscroll = () => {
 scrollBtn.addEventListener("click", () => {
   window.scrollTo({top: 0, behavior: "smooth"});
 });
+
