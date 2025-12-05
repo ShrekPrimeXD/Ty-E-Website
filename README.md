@@ -1,1 +1,1 @@
-Website Personal Created by Ty-E/ShrekPrimeXD
+Website Personal Created by Ty-E
