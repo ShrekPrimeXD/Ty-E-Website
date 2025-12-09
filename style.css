@@ -48,15 +48,12 @@ header {
 
 /* CARTES */
 main.container {
-  margin-top: 120px;
-  /* header fixe */
-  padding: 0 40px;
-  /* plus éloignées des bords */
+  margin-top: 120px; /* header fixe */
+  padding: 0 40px;   /* éloigné des bords */
 }
 
 .card {
-  background: rgba(30, 30, 30, 0.5);
-  /* semi-transparent */
+  background: rgba(30, 30, 30, 0.5); /* semi-transparent */
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   padding: 20px;
@@ -128,17 +125,9 @@ pre .number {
 }
 
 @keyframes rainbow {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 button {
@@ -198,8 +187,7 @@ button:hover {
   height: 100%;
   pointer-events: none;
   overflow: hidden;
-  z-index: 0;
-  /* derrière les cartes */
+  z-index: 0; /* derrière les cartes */
 }
 
 .emoji {
@@ -214,13 +202,33 @@ button:hover {
     transform: translateY(-50px) rotate(0deg);
     opacity: 0;
   }
-
-  10% {
-    opacity: 1;
-  }
-
+  10% { opacity: 1; }
   100% {
     transform: translateY(110vh) rotate(360deg);
     opacity: 0.7;
   }
+}
+
+/* ⭐ BOUTON ME CONTACTER ⭐ */
+.contact-container {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #2a2a2a;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid #444;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.contact-btn:hover {
+  background: #383838;
+  border-color: #666;
 }
