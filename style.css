@@ -232,3 +232,237 @@ button:hover {
   background: #383838;
   border-color: #666;
 }
+
+/* ADMIN STYLES */
+.admin-btn {
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #2a2a2a, #383838);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.admin-btn:hover {
+  background: linear-gradient(135deg, #383838, #444);
+  border-color: #666;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.admin-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+  border: 1px solid #444;
+  border-radius: 15px;
+  padding: 0;
+  z-index: 1000;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.admin-panel.open {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #444;
+  background: linear-gradient(135deg, #333, #444);
+  border-radius: 15px 15px 0 0;
+}
+
+.admin-header h2 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.2em;
+}
+
+.admin-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.admin-header button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-tabs {
+  display: flex;
+  background: #333;
+  border-bottom: 1px solid #444;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+.tab-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.form-section h3 {
+  margin-top: 0;
+  color: var(--accent);
+  font-size: 1em;
+}
+
+.admin-panel input,
+.admin-panel select,
+.admin-panel textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 12px 0;
+  border: 1px solid #555;
+  border-radius: 6px;
+  background: #333;
+  color: #fff;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.admin-panel input:focus,
+.admin-panel select:focus,
+.admin-panel textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 5px rgba(15, 98, 254, 0.3);
+}
+
+.admin-panel textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.action-btn {
+  padding: 10px 15px;
+  background: linear-gradient(135deg, var(--accent), #095ad1);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  margin: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.action-btn.danger {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+.action-btn.danger:hover {
+  background: linear-gradient(135deg, #c82333, #a02622);
+}
+
+.manage-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid #444;
+}
+
+.manage-item span {
+  flex: 1;
+  font-weight: 500;
+}
+
+.manage-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.edit-btn {
+  padding: 5px 10px;
+  background: #ffc107;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover {
+  background: #e0a800;
+}
+
+.delete-btn {
+  padding: 5px 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+.protected {
+  color: #666;
+  font-style: italic;
+  font-size: 12px;
+}
