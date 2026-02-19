@@ -50,6 +50,21 @@ header {
   align-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   border-bottom: 3px solid var(--debian-blue);
+  transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateY(0);
+}
+
+/* État initial caché pour le header */
+header.header-hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* État visible avec animation */
+header.header-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .top-bar {
@@ -86,6 +101,21 @@ main.container {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.175);
+  transform: translateY(0);
+}
+
+/* État initial caché pour le main */
+main.main-hidden {
+  opacity: 0;
+  transform: translateY(50px);
+  pointer-events: none;
+}
+
+/* État visible avec animation */
+main.main-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card {
@@ -352,22 +382,232 @@ pre .number {
   padding: 25px 0;
   margin-top: 50px;
   border-top: 3px solid var(--debian-blue);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.175);
+  transform: translateY(0);
 }
 
-.site-footer .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
+/* État initial caché pour le footer */
+footer.footer-hidden {
+  opacity: 0;
+  transform: translateY(50px);
+  pointer-events: none;
+}
+
+/* État visible avec animation */
+footer.footer-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animation du header avec délai différent pour un effet plus dynamique */
+@keyframes slideDownHeader {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpContent {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ÉCRAN DE VERROUILLAGE */
+.lock-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--debian-dark) 0%, #001e3c 100%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.lock-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lock-container {
   text-align: center;
+  padding: 40px;
+  max-width: 500px;
+  width: 90%;
+  animation: fadeInUp 0.8s ease;
 }
 
-.site-footer p {
-  margin: 8px 0;
-  font-size: 14px;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.site-footer strong {
-  color: var(--debian-light-blue);
+.lock-logo {
+  width: 300px;
+  height: auto;
+  margin-bottom: 20px;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.5));
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 40px rgba(74, 144, 226, 0.8));
+  }
+}
+
+.lock-title {
+  color: var(--debian-white);
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, 
+    var(--debian-light-blue) 0%, 
+    #a0d2ff 25%, 
+    var(--debian-light-blue) 50%, 
+    #a0d2ff 75%, 
+    var(--debian-light-blue) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: wave 4s linear infinite;
+}
+
+.lock-subtitle {
+  color: var(--debian-light-gray);
+  font-size: 1.1em;
+  margin-bottom: 30px;
+  opacity: 0.8;
+}
+
+.lock-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.lock-input {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 2px solid rgba(74, 144, 226, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--debian-white);
+  font-size: 1.1em;
+  font-family: 'DejaVu Sans', sans-serif;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.lock-input:focus {
+  outline: none;
+  border-color: var(--debian-light-blue);
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.02);
+}
+
+.lock-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: normal;
+}
+
+.lock-btn {
+  padding: 15px 30px;
+  background: linear-gradient(135deg, var(--debian-blue), #004a8a);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 86, 158, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.lock-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.lock-btn:hover::before {
+  left: 100%;
+}
+
+.lock-btn:hover {
+  background: linear-gradient(135deg, var(--debian-light-blue), var(--debian-blue));
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5);
+}
+
+.lock-btn:active {
+  transform: translateY(0);
+}
+
+.error-message {
+  color: #ff6b6b;
+  margin-top: 20px;
+  font-size: 1em;
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.error-message.show {
+  opacity: 1;
+}
+
+/* Animation de secouement pour erreur */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.lock-input.error {
+  animation: shake 0.5s ease;
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
 }
 
 /* RESPONSIVE */
@@ -408,6 +648,26 @@ pre .number {
     background-size: 400px;
     opacity: 0.4;
   }
+
+  .lock-logo {
+    width: 220px;
+  }
+  
+  .lock-title {
+    font-size: 2em;
+  }
+  
+  .lock-container {
+    padding: 20px;
+  }
+  
+  .lock-input {
+    padding: 12px 18px;
+  }
+  
+  .lock-btn {
+    padding: 12px 25px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -419,5 +679,17 @@ pre .number {
   .contact-btn {
     padding: 12px 20px;
     font-size: 14px;
+  }
+
+  .lock-logo {
+    width: 180px;
+  }
+  
+  .lock-title {
+    font-size: 1.8em;
+  }
+  
+  .lock-subtitle {
+    font-size: 1em;
   }
 }
