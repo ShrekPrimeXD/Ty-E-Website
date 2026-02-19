@@ -31,8 +31,8 @@
       <p class="lock-subtitle">Espace de cours sécurisé</p>
       
       <div class="lock-input-group">
-        <input type="password" id="accessCode" class="lock-input" placeholder="Code d'accès" autofocus>
-        <button id="unlockBtn" class="lock-btn">Déverrouiller</button>
+        <input type="password" id="accessCode" class="lock-input" placeholder="Code d'accès" aria-label="Code d'accès" autofocus>
+        <button id="unlockBtn" class="lock-btn" aria-label="Déverrouiller le site">Déverrouiller</button>
       </div>
       
       <div id="errorMessage" class="error-message">Code incorrect. Veuillez réessayer.</div>
@@ -45,12 +45,20 @@
       <img src="images/LogoTy-E.png" alt="Logo Ty-E" class="logo">
       <div class="top-text-search">
         <div class="subtitle">Espace pour organiser les cours</div>
-        <input id="searchBox" placeholder="🔎 Rechercher un projet...">
+        <input id="searchBox" placeholder="🔎 Rechercher un projet..." aria-label="Rechercher un projet">
       </div>
     </div>
   </header>
 
   <main class="container">
+    
+    <!-- FILTRES RAPIDES -->
+    <div class="quick-filters">
+      <button class="filter-btn active" data-filter="all" aria-label="Afficher tous les projets">Tous</button>
+      <button class="filter-btn" data-filter="tinkercad" aria-label="Afficher les projets Tinkercad">🔗 Tinkercad</button>
+      <button class="filter-btn" data-filter="schemas" aria-label="Afficher les schémas électriques">📷 Schémas</button>
+      <button class="filter-btn" data-filter="code" aria-label="Afficher les projets avec code Arduino">📟 Avec code</button>
+    </div>
 
     <section class="card">
       <h2>Projets — Melec</h2>
@@ -64,7 +72,7 @@
 
     <!-- 🔥 BOUTON ME CONTACTER AVEC ICÔNE -->
     <div class="contact-container">
-      <a href="mailto:shrekbot@outlook.fr" class="contact-btn">📩 Me contacter</a>
+      <a href="mailto:shrekbot@outlook.fr" class="contact-btn" aria-label="Me contacter par email">📩 Me contacter</a>
     </div>
 
   </main>
@@ -77,7 +85,7 @@
     </div>
   </footer>
 
-  <button id="scrollTopBtn" title="Remonter en haut">⬆️</button>
+  <button id="scrollTopBtn" title="Remonter en haut" aria-label="Remonter en haut de la page">⬆️</button>
   <script src="script.js"></script>
 </body>
 
