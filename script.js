@@ -120,6 +120,8 @@ function highlightCode(code) {
 
 function renderProjects(filiere) {
   const container = document.getElementById(filiere + "-list");
+  if (!container) return;
+  
   container.innerHTML = "";
   const frag = document.createDocumentFragment();
 
@@ -184,12 +186,139 @@ function renderProjects(filiere) {
 
 // Render all categories
 function renderAllProjects() {
-  Object.keys(projetsParFiliere).forEach(filiere => {
-    renderProjects(filiere);
-  });
+  // Vérifier si le conteneur existe avant de rendre
+  if (document.getElementById('melec-list') && document.getElementById('ciel-list')) {
+    Object.keys(projetsParFiliere).forEach(filiere => {
+      renderProjects(filiere);
+    });
+  }
 }
 
-renderAllProjects();
+/*******************
+ * SYSTÈME DE VERROUILLAGE
+ *******************/
+const CORRECT_CODE = "Ty-E";
+const lockScreen = document.getElementById('lockScreen');
+const accessCode = document.getElementById('accessCode');
+const unlockBtn = document.getElementById('unlockBtn');
+const errorMessage = document.getElementById('errorMessage');
+const mainContent = document.querySelector('main');
+const header = document.querySelector('header');
+const footer = document.querySelector('footer');
+
+// Ajouter les classes d'état initial
+header.classList.add('header-hidden');
+mainContent.classList.add('main-hidden');
+footer.classList.add('footer-hidden');
+
+// Vérifier si le site a déjà été déverrouillé dans cette session
+if (sessionStorage.getItem('unlocked') === 'true') {
+  lockScreen.classList.add('hidden');
+  
+  // Révéler avec animation immédiate
+  setTimeout(() => {
+    header.classList.remove('header-hidden');
+    header.classList.add('header-visible');
+    
+    setTimeout(() => {
+      mainContent.classList.remove('main-hidden');
+      mainContent.classList.add('main-visible');
+      
+      setTimeout(() => {
+        footer.classList.remove('footer-hidden');
+        footer.classList.add('footer-visible');
+      }, 150);
+    }, 200);
+  }, 100);
+  
+  renderAllProjects();
+}
+
+// Fonction pour révéler le site avec animation séquentielle
+function revealSite() {
+  // Cacher l'écran de verrouillage
+  lockScreen.classList.add('hidden');
+  
+  // Révéler le header en premier (depuis le haut)
+  setTimeout(() => {
+    header.classList.remove('header-hidden');
+    header.classList.add('header-visible');
+    
+    // Puis révéler le contenu principal (depuis le bas)
+    setTimeout(() => {
+      mainContent.classList.remove('main-hidden');
+      mainContent.classList.add('main-visible');
+      
+      // Enfin révéler le footer (depuis le bas)
+      setTimeout(() => {
+        footer.classList.remove('footer-hidden');
+        footer.classList.add('footer-visible');
+      }, 150);
+    }, 200);
+  }, 100);
+  
+  // Sauvegarder dans la session
+  sessionStorage.setItem('unlocked', 'true');
+  
+  // Rendre les projets
+  renderAllProjects();
+  
+  // Permettre le défilement après l'animation
+  setTimeout(() => {
+    document.body.style.overflow = 'auto';
+  }, 800);
+}
+
+// Fonction pour afficher l'erreur
+function showError() {
+  errorMessage.classList.add('show');
+  accessCode.classList.add('error');
+  accessCode.value = '';
+  accessCode.focus();
+  
+  // Retirer la classe d'erreur après l'animation
+  setTimeout(() => {
+    accessCode.classList.remove('error');
+  }, 500);
+  
+  // Cacher le message d'erreur après 3 secondes
+  setTimeout(() => {
+    errorMessage.classList.remove('show');
+  }, 3000);
+}
+
+// Déverrouillage avec le bouton
+unlockBtn.addEventListener('click', () => {
+  if (accessCode.value === CORRECT_CODE) {
+    revealSite();
+  } else {
+    showError();
+  }
+});
+
+// Déverrouillage avec la touche Entrée
+accessCode.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (accessCode.value === CORRECT_CODE) {
+      revealSite();
+    } else {
+      showError();
+    }
+  }
+});
+
+// Effet de focus automatique sur le champ de code
+accessCode.focus();
+
+// Nettoyer l'erreur quand l'utilisateur commence à taper
+accessCode.addEventListener('input', () => {
+  errorMessage.classList.remove('show');
+  accessCode.classList.remove('error');
+});
+
+// Empêcher de faire défiler la page pendant que l'écran de verrouillage est actif
+document.body.style.overflow = 'hidden';
 
 /*******************
  * SEARCH
