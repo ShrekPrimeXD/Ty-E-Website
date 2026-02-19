@@ -23,6 +23,22 @@
 </head>
 
 <body>
+  <!-- ÉCRAN DE VERROUILLAGE -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-container">
+      <img src="images/LogoTy-E.png" alt="Logo Ty-E" class="lock-logo">
+      <h1 class="lock-title">Ty-E</h1>
+      <p class="lock-subtitle">Espace de cours sécurisé</p>
+      
+      <div class="lock-input-group">
+        <input type="password" id="accessCode" class="lock-input" placeholder="Code d'accès" autofocus>
+        <button id="unlockBtn" class="lock-btn">Déverrouiller</button>
+      </div>
+      
+      <div id="errorMessage" class="error-message">Code incorrect. Veuillez réessayer.</div>
+    </div>
+  </div>
+
   <!-- HEADER FIXE -->
   <header>
     <div class="top-bar">
