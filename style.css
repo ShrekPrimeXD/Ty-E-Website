@@ -94,6 +94,40 @@ header.header-visible {
   font-weight: 600;
 }
 
+/* FILTRES RAPIDES */
+.quick-filters {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0 5px 0;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  background: rgba(30, 30, 46, 0.8);
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 25px;
+  color: var(--debian-light-gray);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.filter-btn:hover {
+  background: rgba(74, 144, 226, 0.2);
+  border-color: var(--debian-light-blue);
+  transform: translateY(-2px);
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, var(--debian-blue), #004a8a);
+  border-color: white;
+  color: white;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
 /* CARTES */
 main.container {
   margin-top: 110px;
@@ -193,14 +227,39 @@ main.main-visible {
   padding: 18px;
   margin-bottom: 18px;
   border: 1px solid rgba(74, 144, 226, 0.2);
+  position: relative;
 }
 
-/* TITRES DES PROJETS SIMPLES (plus d'animation) */
+/* BADGE CODE */
+.project.has-code::before {
+  content: "📟 Code";
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, var(--debian-light-blue), var(--debian-blue));
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.4);
+  z-index: 2;
+  letter-spacing: 0.5px;
+}
+
+.project.has-code:hover::before {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.6);
+}
+
+/* TITRES DES PROJETS SIMPLES */
 .project h3 {
   margin: 0 0 12px 0;
   color: var(--debian-white);
   font-size: 1.1em;
   font-weight: 600;
+  padding-right: 70px; /* Pour laisser de la place au badge */
 }
 
 .project-link {
@@ -420,146 +479,100 @@ footer.footer-visible {
   color: var(--debian-light-blue);
 }
 
-/* CARROUSEL AMÉLIORÉ */
-.carousel-container {
-  position: relative;
-  width: 100%;
-  margin: 20px 0;
-  overflow: hidden;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.2);
-  padding: 10px 0;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
+/* GRILLE D'IMAGES */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 15px 0;
 }
 
-.carousel {
-  display: flex;
-  gap: 15px;
-  transition: transform 0.3s ease;
-  padding: 5px 5px;
-  cursor: grab;
-  will-change: transform;
+.image-grid.hidden {
+  display: none;
 }
 
-.carousel:active {
-  cursor: grabbing;
-}
-
-.carousel-item {
-  flex: 0 0 auto;
-  width: 200px;
+.grid-item {
   background: rgba(30, 30, 46, 0.9);
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   border: 1px solid rgba(74, 144, 226, 0.3);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  aspect-ratio: 4/3;
+  display: flex;
+  flex-direction: column;
 }
 
-.carousel-item:hover {
-  transform: translateY(-5px);
+.grid-item:hover {
+  transform: translateY(-2px);
   border-color: var(--debian-light-blue);
-  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+  box-shadow: 0 3px 10px rgba(74, 144, 226, 0.2);
 }
 
-.carousel-image {
+.grid-image {
   width: 100%;
-  height: 150px;
+  height: calc(100% - 25px);
   object-fit: cover;
   display: block;
-  transition: transform 0.3s ease;
-  pointer-events: auto;
-  cursor: pointer;
+  flex: 1;
 }
 
-.carousel-item:hover .carousel-image {
-  transform: scale(1.05);
-}
-
-.carousel-caption {
-  padding: 8px 5px;
+.grid-caption {
+  height: 25px;
+  padding: 4px 5px;
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--debian-light-gray);
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-top: 1px solid rgba(74, 144, 226, 0.3);
+  border-top: 1px solid rgba(74, 144, 226, 0.2);
 }
 
-/* Flèches du carrousel */
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+/* BOUTON "VOIR PLUS" */
+.more-button {
   background: linear-gradient(135deg, var(--debian-blue), #004a8a);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  z-index: 10;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  opacity: 1;
-}
-
-.carousel-arrow:hover {
-  background: linear-gradient(135deg, var(--debian-light-blue), var(--debian-blue));
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.carousel-arrow.left {
-  left: 10px;
-}
-
-.carousel-arrow.right {
-  right: 10px;
-}
-
-/* Indicateurs du carrousel */
-.carousel-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-  padding: 5px;
-}
-
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  aspect-ratio: 4/3;
 }
 
-.dot:hover {
-  background: rgba(255, 255, 255, 0.5);
-  transform: scale(1.2);
-}
-
-.dot.active {
-  background: var(--debian-light-blue);
-  transform: scale(1.3);
-  box-shadow: 0 0 15px var(--debian-light-blue);
+.more-button:hover {
+  background: linear-gradient(135deg, var(--debian-light-blue), var(--debian-blue));
   border-color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
 }
 
-/* LIGHTBOX AMÉLIORÉE */
+.more-content {
+  text-align: center;
+  color: white;
+  padding: 10px;
+}
+
+.more-icon {
+  font-size: 28px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.more-text {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+/* LIGHTBOX */
 .lightbox {
   display: none;
   position: fixed;
@@ -571,67 +584,42 @@ footer.footer-visible {
   z-index: 10000;
   justify-content: center;
   align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  backdrop-filter: blur(5px);
 }
 
 .lightbox.show {
   display: flex;
-  opacity: 1;
-}
-
-.lightbox-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-  animation: zoomIn 0.3s ease;
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 .lightbox-image {
-  max-width: 100%;
+  max-width: 90%;
   max-height: 80vh;
-  border-radius: 12px;
-  box-shadow: 0 0 40px rgba(74, 144, 226, 0.6);
-  border: 3px solid var(--debian-light-blue);
-  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid var(--debian-light-blue);
+  box-shadow: 0 0 30px rgba(74, 144, 226, 0.3);
 }
 
 .lightbox-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
   text-align: center;
-  color: var(--debian-white);
-  padding: 15px;
+  color: white;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.6);
   font-size: 16px;
-  font-weight: 500;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 0 0 12px 12px;
-  margin-top: -5px;
-  border-left: 3px solid var(--debian-light-blue);
-  border-right: 3px solid var(--debian-light-blue);
-  border-bottom: 3px solid var(--debian-light-blue);
 }
 
 .lightbox-close {
   position: absolute;
-  top: -45px;
-  right: -10px;
+  top: 20px;
+  right: 30px;
   color: white;
   font-size: 50px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  z-index: 10001;
+  transition: all 0.2s;
   width: 50px;
   height: 50px;
   display: flex;
@@ -639,14 +627,12 @@ footer.footer-visible {
   justify-content: center;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .lightbox-close:hover {
   color: var(--debian-light-blue);
-  transform: rotate(90deg) scale(1.1);
   background: rgba(255, 255, 255, 0.2);
-  border-color: var(--debian-light-blue);
+  transform: rotate(90deg);
 }
 
 /* ÉCRAN DE VERROUILLAGE */
@@ -864,6 +850,26 @@ footer.footer-visible {
     padding: 15px;
   }
   
+  .project h3 {
+    padding-right: 60px;
+  }
+  
+  .project.has-code::before {
+    font-size: 10px;
+    padding: 3px 8px;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .quick-filters {
+    gap: 8px;
+  }
+  
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
   #scrollTopBtn {
     bottom: 20px;
     right: 20px;
@@ -896,38 +902,24 @@ footer.footer-visible {
     padding: 12px 25px;
   }
 
-  .carousel-item {
-    width: 160px;
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
   
-  .carousel-image {
-    height: 120px;
+  .more-icon {
+    font-size: 24px;
   }
   
-  .carousel-caption {
+  .more-text {
     font-size: 11px;
   }
   
-  .carousel-arrow {
-    width: 35px;
-    height: 35px;
-    font-size: 18px;
-  }
-  
-  .carousel-arrow.left {
-    left: 5px;
-  }
-  
-  .carousel-arrow.right {
-    right: 5px;
-  }
-  
   .lightbox-close {
-    top: -40px;
-    right: -5px;
+    top: 10px;
+    right: 15px;
     font-size: 40px;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -954,39 +946,30 @@ footer.footer-visible {
     font-size: 1em;
   }
 
-  .carousel-item {
-    width: 130px;
+  .quick-filters {
+    justify-content: center;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
   
-  .carousel-image {
-    height: 100px;
-  }
-  
-  .carousel-caption {
+  .grid-caption {
     font-size: 10px;
-    padding: 5px 3px;
+    height: 22px;
   }
   
-  .carousel-arrow {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
+  .more-icon {
+    font-size: 20px;
   }
   
-  .lightbox-image {
-    max-height: 70vh;
+  .more-text {
+    font-size: 10px;
+    padding: 2px 6px;
   }
   
   .lightbox-caption {
     font-size: 14px;
-    padding: 12px;
+    padding: 10px;
   }
-  
-  .lightbox-close {
-    top: -35px;
-    right: 0;
-    font-size: 35px;
-    width: 40px;
-    height: 40px;
-  }
-  }
+}
