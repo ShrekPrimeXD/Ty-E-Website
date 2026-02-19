@@ -4,7 +4,21 @@
 const projetsParFiliere = {
   melec: [
     { titre: "LECTURE SIGNAUX", lien: "https://www.tinkercad.com/things/4BP9wfD0XwW-copy-of-lecture-signaux" },
-    { titre: "REDRESSEUR DIODE", lien: "https://www.tinkercad.com/things/9DSqqfoTbny-redresseur-diode" }
+    { titre: "REDRESSEUR DIODE", lien: "https://www.tinkercad.com/things/9DSqqfoTbny-redresseur-diode" },
+    {
+      titre: "Évaluation finale 1",
+      lien: "#",
+      description: "Télérupteur, Prise commandée, Simple allumage, Double allumage, Va et vient, Sonnerie",
+      images: [
+        { nom: "doite-d-encastrement-gauche", alt: "Boîte d'encastrement gauche" },
+        { nom: "boite-d-encastrement-droite", alt: "Boîte d'encastrement droite" },
+        { nom: "boite-de-derivation-gauche", alt: "Boîte de dérivation gauche" },
+        { nom: "boite-de-derivation-droite", alt: "Boîte de dérivation droite" },
+        { nom: "tableau-electrique", alt: "Tableau électrique" },
+        { nom: "rendu-final", alt: "Rendu final" },
+        { nom: "schema1", alt: "Schéma électrique 1" }
+      ]
+    }
   ],
   ciel: [
     {
@@ -98,6 +112,50 @@ void loop() {
     noTone(buzzer);
   }
 }`
+    },
+    {
+      titre: "Servomoteur",
+      lien: "https://www.tinkercad.com/things/5F4qAuwtIqW-servo-moteur",
+      code: `#include <Servo.h>
+
+Servo leServo; //declarer la variable lié a l'équipement
+
+int const potPin = A0;
+int potVal;
+int angle;
+
+void setup() {
+  leServo.attach(9);
+  Serial.begin(9600);
+}
+
+void loop() {
+  potVal = analogRead(potPin);
+  angle = map(potVal, 0, 1023, 0, 179);
+  leServo.write(angle);
+}`
+    },
+    {
+      titre: "Affichage écran LCD",
+      lien: "https://www.tinkercad.com/things/lqWznX7X0Ye-affichage-texte-ecran-lcd",
+      code: `#include <LiquidCrystal.h>
+
+// RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print("Texte premiere ligne");
+  
+  lcd.setCursor(0, 1);
+  lcd.print("Texte deuxieme ligne");
+}
+
+void loop() {
+  lcd.scrollDisplayLeft();  
+  delay(300);              
+}`
     }
   ]
 };
@@ -106,12 +164,14 @@ void loop() {
  * RENDER PROJECTS
  *******************/
 function highlightCode(code) {
+  const includes = /(#include.*)/g;
   const comments = /(\/\/.*)/g;
-  const keywords = /\b(void|int|float|const|long|pinMode|digitalWrite|delay|Serial|tone|noTone|INPUT|OUTPUT|HIGH|LOW)\b/g;
+  const keywords = /\b(void|int|float|const|long|pinMode|digitalWrite|delay|Serial|tone|noTone|INPUT|OUTPUT|HIGH|LOW|Servo|map|attach|write|analogRead|include|LiquidCrystal|begin|setCursor|print|scrollDisplayLeft)\b/g;
   const functions = /\b(setup|loop|pulseIn|begin)\b/g;
   const numbers = /\b\d+(\.\d+)?\b/g;
 
   return code
+    .replace(includes, '<span class="preprocessor">$1</span>')
     .replace(comments, '<span class="comment">$1</span>')
     .replace(keywords, '<span class="keyword">$1</span>')
     .replace(functions, '<span class="function">$1</span>')
@@ -132,13 +192,94 @@ function renderProjects(filiere) {
     const title = document.createElement("h3");
     title.textContent = p.titre;
 
-    const link = document.createElement("a");
-    link.href = p.lien;
-    link.target = "_blank";
-    link.textContent = "🔗 Ouvrir le montage";
-    link.className = "project-link";
+    box.append(title);
 
-    box.append(title, link);
+    // Si c'est un projet avec description et images
+    if (p.description && p.images) {
+      const desc = document.createElement("p");
+      desc.className = "project-description";
+      desc.innerHTML = `<strong>Schémas inclus :</strong> ${p.description}`;
+      box.appendChild(desc);
+
+      // Créer le conteneur du carrousel
+      const carouselContainer = document.createElement("div");
+      carouselContainer.className = "carousel-container";
+      
+      // Créer le carrousel
+      const carousel = document.createElement("div");
+      carousel.className = "carousel";
+      carousel.id = `carousel-${filiere}-${p.titre.replace(/\s+/g, '-')}`;
+      
+      // Ajouter les images au carrousel
+      p.images.forEach(img => {
+        const imgContainer = document.createElement("div");
+        imgContainer.className = "carousel-item";
+        
+        const image = document.createElement("img");
+        image.src = `images/${img.nom}.jpg`; // Format JPEG par défaut
+        image.alt = img.alt;
+        image.loading = "lazy";
+        image.className = "carousel-image";
+        
+        // Gestion d'erreur si l'image est en PNG
+        image.onerror = function() {
+          this.src = `images/${img.nom}.png`;
+          this.onerror = null;
+        };
+        
+        const caption = document.createElement("div");
+        caption.className = "carousel-caption";
+        caption.textContent = img.alt;
+        
+        imgContainer.append(image, caption);
+        carousel.appendChild(imgContainer);
+      });
+      
+      // Créer les flèches de navigation
+      const leftArrow = document.createElement("button");
+      leftArrow.className = "carousel-arrow left";
+      leftArrow.innerHTML = "&#10094;"; // Flèche gauche
+      leftArrow.setAttribute('aria-label', 'Image précédente');
+      
+      const rightArrow = document.createElement("button");
+      rightArrow.className = "carousel-arrow right";
+      rightArrow.innerHTML = "&#10095;"; // Flèche droite
+      rightArrow.setAttribute('aria-label', 'Image suivante');
+      
+      // Ajouter les indicateurs de position
+      const indicators = document.createElement("div");
+      indicators.className = "carousel-indicators";
+      indicators.id = `indicators-${filiere}-${p.titre.replace(/\s+/g, '-')}`;
+      
+      p.images.forEach((_, index) => {
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dot.setAttribute('data-index', index);
+        indicators.appendChild(dot);
+      });
+      
+      // Assembler le carrousel
+      carouselContainer.appendChild(carousel);
+      carouselContainer.appendChild(leftArrow);
+      carouselContainer.appendChild(rightArrow);
+      carouselContainer.appendChild(indicators);
+      
+      box.appendChild(carouselContainer);
+      
+      // Initialiser le carrousel après l'ajout au DOM
+      setTimeout(() => {
+        initCarousel(carousel.id, indicators.id);
+      }, 0);
+      
+    } else {
+      // Projets normaux avec lien Tinkercad
+      const link = document.createElement("a");
+      link.href = p.lien;
+      link.target = "_blank";
+      link.textContent = "🔗 Ouvrir le montage";
+      link.className = "project-link";
+      box.appendChild(link);
+    }
 
     if (p.code) {
       const btn = document.createElement("button");
@@ -183,6 +324,287 @@ function renderProjects(filiere) {
 
   container.appendChild(frag);
 }
+
+/*******************
+ * CARROUSEL AMÉLIORÉ
+ *******************/
+function initCarousel(carouselId, indicatorsId) {
+  const carousel = document.getElementById(carouselId);
+  const indicators = document.getElementById(indicatorsId);
+  if (!carousel || !indicators) return;
+  
+  const items = carousel.querySelectorAll('.carousel-item');
+  const leftArrow = carousel.parentElement.querySelector('.carousel-arrow.left');
+  const rightArrow = carousel.parentElement.querySelector('.carousel-arrow.right');
+  const dots = indicators.querySelectorAll('.dot');
+  
+  let currentIndex = 0;
+  let startX = 0;
+  let currentX = 0;
+  let isDragging = false;
+  let dragStartTime = 0;
+  
+  // Calculer la largeur d'un item (incluant le gap)
+  function getItemWidth() {
+    if (items.length === 0) return 220;
+    const itemWidth = items[0].offsetWidth;
+    const gap = 15; // correspond au gap dans le CSS
+    return itemWidth + gap;
+  }
+  
+  // Fonction pour mettre à jour la position du carrousel
+  function updateCarousel(index, animate = true) {
+    // Limiter l'index
+    if (index < 0) index = 0;
+    if (index > items.length - 1) index = items.length - 1;
+    
+    currentIndex = index;
+    const itemWidth = getItemWidth();
+    
+    // Activer/désactiver l'animation
+    if (animate) {
+      carousel.style.transition = 'transform 0.3s ease';
+    } else {
+      carousel.style.transition = 'none';
+    }
+    
+    // Déplacer le carrousel
+    carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    
+    // Mettre à jour les indicateurs
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+    
+    // Afficher/masquer les flèches
+    if (leftArrow) {
+      leftArrow.style.opacity = currentIndex === 0 ? '0.3' : '1';
+      leftArrow.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
+    }
+    
+    if (rightArrow) {
+      rightArrow.style.opacity = currentIndex === items.length - 1 ? '0.3' : '1';
+      rightArrow.style.pointerEvents = currentIndex === items.length - 1 ? 'none' : 'auto';
+    }
+  }
+  
+  // Navigation par flèches
+  if (leftArrow) {
+    leftArrow.addEventListener('click', () => {
+      updateCarousel(currentIndex - 1);
+    });
+  }
+  
+  if (rightArrow) {
+    rightArrow.addEventListener('click', () => {
+      updateCarousel(currentIndex + 1);
+    });
+  }
+  
+  // Navigation par les indicateurs
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      updateCarousel(index);
+    });
+  });
+  
+  // GESTION TACTILE ET SOURIS
+  carousel.addEventListener('mousedown', startDrag);
+  carousel.addEventListener('touchstart', startDrag, { passive: true });
+  carousel.addEventListener('mousemove', drag);
+  carousel.addEventListener('touchmove', drag, { passive: false });
+  carousel.addEventListener('mouseup', endDrag);
+  carousel.addEventListener('touchend', endDrag);
+  carousel.addEventListener('mouseleave', cancelDrag);
+  
+  function startDrag(e) {
+    e.preventDefault();
+    isDragging = true;
+    dragStartTime = Date.now();
+    
+    // Désactiver la transition pendant le glissement
+    carousel.style.transition = 'none';
+    
+    // Position de départ
+    if (e.type === 'touchstart') {
+      startX = e.touches[0].clientX;
+    } else {
+      startX = e.clientX;
+    }
+    
+    currentX = startX;
+  }
+  
+  function drag(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    
+    let clientX;
+    if (e.type === 'touchmove') {
+      clientX = e.touches[0].clientX;
+    } else {
+      clientX = e.clientX;
+    }
+    
+    const diff = clientX - startX;
+    const itemWidth = getItemWidth();
+    const maxOffset = (items.length - 1) * itemWidth;
+    
+    // Calculer le déplacement avec résistance aux extrémités
+    let offset = -currentIndex * itemWidth + diff;
+    
+    // Ajouter une résistance quand on dépasse
+    if (offset > 0) {
+      offset = offset * 0.3; // Résistance au début
+    } else if (offset < -maxOffset) {
+      offset = -maxOffset + (offset + maxOffset) * 0.3; // Résistance à la fin
+    }
+    
+    carousel.style.transform = `translateX(${offset}px)`;
+  }
+  
+  function endDrag(e) {
+    if (!isDragging) return;
+    
+    let clientX;
+    if (e.type === 'touchend') {
+      clientX = e.changedTouches[0].clientX;
+    } else {
+      clientX = e.clientX;
+    }
+    
+    const diff = clientX - startX;
+    const itemWidth = getItemWidth();
+    const dragTime = Date.now() - dragStartTime;
+    
+    isDragging = false;
+    
+    // Réactiver la transition
+    carousel.style.transition = 'transform 0.3s ease';
+    
+    // Déterminer si on change d'image
+    if (Math.abs(diff) > itemWidth * 0.2 || (dragTime < 300 && Math.abs(diff) > 30)) {
+      // Glissement rapide ou assez long
+      if (diff > 0) {
+        updateCarousel(currentIndex - 1);
+      } else {
+        updateCarousel(currentIndex + 1);
+      }
+    } else {
+      // Revenir à l'image actuelle
+      updateCarousel(currentIndex);
+    }
+  }
+  
+  function cancelDrag() {
+    if (isDragging) {
+      isDragging = false;
+      carousel.style.transition = 'transform 0.3s ease';
+      updateCarousel(currentIndex);
+    }
+  }
+  
+  // Rendre les images cliquables pour la lightbox
+  items.forEach((item, index) => {
+    const img = item.querySelector('img');
+    if (img) {
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const imageName = img.src.split('/').pop().split('.')[0];
+        const altText = img.alt;
+        openLightbox(imageName, altText);
+      });
+    }
+  });
+  
+  // Recalculer la largeur au redimensionnement
+  window.addEventListener('resize', () => {
+    updateCarousel(currentIndex, false);
+  });
+  
+  // Initialiser
+  setTimeout(() => {
+    updateCarousel(0, false);
+  }, 100);
+}
+
+/*******************
+ * LIGHTBOX POUR IMAGES
+ *******************/
+function openLightbox(imageName, altText) {
+  console.log('Ouverture lightbox:', imageName); // Pour debug
+  
+  // Créer la lightbox si elle n'existe pas
+  let lightbox = document.getElementById('lightbox');
+  
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.id = 'lightbox';
+    lightbox.className = 'lightbox';
+    
+    const lightboxContent = document.createElement('div');
+    lightboxContent.className = 'lightbox-content';
+    
+    const closeBtn = document.createElement('span');
+    closeBtn.className = 'lightbox-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = closeLightbox;
+    
+    const img = document.createElement('img');
+    img.className = 'lightbox-image';
+    img.id = 'lightbox-image';
+    
+    const caption = document.createElement('div');
+    caption.className = 'lightbox-caption';
+    caption.id = 'lightbox-caption';
+    
+    lightboxContent.append(closeBtn, img, caption);
+    lightbox.appendChild(lightboxContent);
+    
+    // Fermer en cliquant sur le fond
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+    
+    document.body.appendChild(lightbox);
+  }
+  
+  // Mettre à jour l'image et la légende
+  const lightboxImg = document.getElementById('lightbox-image');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  
+  // Essayer avec .jpg d'abord
+  lightboxImg.src = `images/${imageName}.jpg`;
+  lightboxImg.alt = altText;
+  lightboxCaption.textContent = altText;
+  
+  // Si l'image ne charge pas, essayer .png
+  lightboxImg.onerror = function() {
+    this.src = `images/${imageName}.png`;
+    this.onerror = null;
+  };
+  
+  // Afficher la lightbox
+  lightbox.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) {
+    lightbox.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+}
+
+// Fermer avec la touche Echap
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+  }
+});
 
 // Render all categories
 function renderAllProjects() {
@@ -259,7 +681,7 @@ function revealSite() {
   
   // Sauvegarder dans la session
   sessionStorage.setItem('unlocked', 'true');
-  
+
   // Rendre les projets
   renderAllProjects();
   
