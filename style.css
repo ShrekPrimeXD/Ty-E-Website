@@ -301,6 +301,11 @@ pre .number {
   color: #b5cea8;
 }
 
+pre .preprocessor {
+  color: #c586c0;
+  font-weight: bold;
+}
+
 #scrollTopBtn {
   display: none;
   position: fixed;
@@ -399,27 +404,249 @@ footer.footer-visible {
   transform: translateY(0);
 }
 
-/* Animation du header avec délai différent pour un effet plus dynamique */
-@keyframes slideDownHeader {
-  0% {
+/* DESCRIPTION DU PROJET */
+.project-description {
+  margin: 10px 0 15px 0;
+  padding: 10px 15px;
+  background: rgba(74, 144, 226, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid var(--debian-light-blue);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--debian-light-gray);
+}
+
+.project-description strong {
+  color: var(--debian-light-blue);
+}
+
+/* CARROUSEL AMÉLIORÉ */
+.carousel-container {
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel {
+  display: flex;
+  gap: 15px;
+  transition: transform 0.3s ease;
+  padding: 5px 5px;
+  cursor: grab;
+  will-change: transform;
+}
+
+.carousel:active {
+  cursor: grabbing;
+}
+
+.carousel-item {
+  flex: 0 0 auto;
+  width: 200px;
+  background: rgba(30, 30, 46, 0.9);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-item:hover {
+  transform: translateY(-5px);
+  border-color: var(--debian-light-blue);
+  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+}
+
+.carousel-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.carousel-item:hover .carousel-image {
+  transform: scale(1.05);
+}
+
+.carousel-caption {
+  padding: 8px 5px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--debian-light-gray);
+  background: rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-top: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+/* Flèches du carrousel */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--debian-blue), #004a8a);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
+
+.carousel-arrow:hover {
+  background: linear-gradient(135deg, var(--debian-light-blue), var(--debian-blue));
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.6);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.carousel-arrow.left {
+  left: 10px;
+}
+
+.carousel-arrow.right {
+  right: 10px;
+}
+
+/* Indicateurs du carrousel */
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.dot.active {
+  background: var(--debian-light-blue);
+  transform: scale(1.3);
+  box-shadow: 0 0 15px var(--debian-light-blue);
+  border-color: white;
+}
+
+/* LIGHTBOX AMÉLIORÉE */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.lightbox.show {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
     opacity: 0;
-    transform: translateY(-100%);
   }
-  100% {
+  to {
+    transform: scale(1);
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-@keyframes slideUpContent {
-  0% {
-    opacity: 0;
-    transform: translateY(100px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.lightbox-image {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(74, 144, 226, 0.6);
+  border: 3px solid var(--debian-light-blue);
+  object-fit: contain;
+}
+
+.lightbox-caption {
+  text-align: center;
+  color: var(--debian-white);
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 0 0 12px 12px;
+  margin-top: -5px;
+  border-left: 3px solid var(--debian-light-blue);
+  border-right: 3px solid var(--debian-light-blue);
+  border-bottom: 3px solid var(--debian-light-blue);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -45px;
+  right: -10px;
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-close:hover {
+  color: var(--debian-light-blue);
+  transform: rotate(90deg) scale(1.1);
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--debian-light-blue);
 }
 
 /* ÉCRAN DE VERROUILLAGE */
@@ -668,6 +895,40 @@ footer.footer-visible {
   .lock-btn {
     padding: 12px 25px;
   }
+
+  .carousel-item {
+    width: 160px;
+  }
+  
+  .carousel-image {
+    height: 120px;
+  }
+  
+  .carousel-caption {
+    font-size: 11px;
+  }
+  
+  .carousel-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+  
+  .carousel-arrow.left {
+    left: 5px;
+  }
+  
+  .carousel-arrow.right {
+    right: 5px;
+  }
+  
+  .lightbox-close {
+    top: -40px;
+    right: -5px;
+    font-size: 40px;
+    width: 45px;
+    height: 45px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -692,4 +953,40 @@ footer.footer-visible {
   .lock-subtitle {
     font-size: 1em;
   }
-}
+
+  .carousel-item {
+    width: 130px;
+  }
+  
+  .carousel-image {
+    height: 100px;
+  }
+  
+  .carousel-caption {
+    font-size: 10px;
+    padding: 5px 3px;
+  }
+  
+  .carousel-arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+  
+  .lightbox-image {
+    max-height: 70vh;
+  }
+  
+  .lightbox-caption {
+    font-size: 14px;
+    padding: 12px;
+  }
+  
+  .lightbox-close {
+    top: -35px;
+    right: 0;
+    font-size: 35px;
+    width: 40px;
+    height: 40px;
+  }
+  }
