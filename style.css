@@ -94,18 +94,20 @@ header.header-visible {
   font-weight: 600;
 }
 
-/* FILTRES RAPIDES */
+/* FILTRES RAPIDES - Version corrigée pour mobile */
 .quick-filters {
   display: flex;
-  gap: 10px;
-  margin: 15px 0 5px 0;
+  gap: 8px;
+  margin: 10px 0 15px 0;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 5;
 }
 
 .filter-btn {
-  padding: 8px 16px;
-  background: rgba(30, 30, 46, 0.8);
-  border: 1px solid rgba(74, 144, 226, 0.3);
+  padding: 8px 14px;
+  background: rgba(30, 30, 46, 0.95);
+  border: 1px solid rgba(74, 144, 226, 0.4);
   border-radius: 25px;
   color: var(--debian-light-gray);
   font-size: 13px;
@@ -113,6 +115,8 @@ header.header-visible {
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
 }
 
 .filter-btn:hover {
@@ -130,7 +134,7 @@ header.header-visible {
 
 /* CARTES */
 main.container {
-  margin-top: 110px;
+  margin-top: 130px; /* Augmenté pour laisser de la place aux filtres */
   padding: 0 40px;
   max-width: 1200px;
   margin-left: auto;
@@ -823,27 +827,55 @@ footer.footer-visible {
   box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE - CORRECTIONS POUR MOBILE */
 @media (max-width: 768px) {
   main.container {
-    padding: 0 20px;
-    margin-top: 90px;
+    margin-top: 100px; /* Réajusté pour mobile */
+    padding: 0 15px;
   }
   
   header {
-    padding: 12px 15px;
+    padding: 10px 12px;
   }
   
   .top-bar {
-    gap: 15px;
+    gap: 10px;
   }
   
   .logo {
-    width: 50px;
+    width: 45px;
+  }
+  
+  .subtitle {
+    font-size: 13px;
+  }
+  
+  #searchBox {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .quick-filters {
+    margin: 5px 0 15px 0;
+    gap: 6px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+    flex: 0 0 auto; /* Empêche les boutons de s'étirer */
   }
   
   .card {
-    padding: 20px;
+    padding: 15px;
+    margin: 15px 0;
+  }
+  
+  .card h2 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
   }
   
   .project {
@@ -852,6 +884,7 @@ footer.footer-visible {
   
   .project h3 {
     padding-right: 60px;
+    font-size: 1em;
   }
   
   .project.has-code::before {
@@ -859,15 +892,6 @@ footer.footer-visible {
     padding: 3px 8px;
     top: 10px;
     right: 10px;
-  }
-  
-  .quick-filters {
-    gap: 8px;
-  }
-  
-  .filter-btn {
-    padding: 6px 12px;
-    font-size: 12px;
   }
   
   #scrollTopBtn {
@@ -924,6 +948,34 @@ footer.footer-visible {
 }
 
 @media (max-width: 480px) {
+  main.container {
+    margin-top: 90px;
+    padding: 0 10px;
+  }
+  
+  .top-text-search {
+    gap: 5px;
+  }
+  
+  .subtitle {
+    font-size: 12px;
+  }
+  
+  #searchBox {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  
+  .quick-filters {
+    gap: 5px;
+    margin: 5px 0 12px 0;
+  }
+  
+  .filter-btn {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  
   body::before {
     background-size: 300px;
     opacity: 0.35;
@@ -944,10 +996,6 @@ footer.footer-visible {
   
   .lock-subtitle {
     font-size: 1em;
-  }
-
-  .quick-filters {
-    justify-content: center;
   }
 
   .image-grid {
@@ -971,5 +1019,27 @@ footer.footer-visible {
   .lightbox-caption {
     font-size: 14px;
     padding: 10px;
+  }
+}
+
+/* Version avec défilement horizontal pour très petits écrans */
+@media (max-width: 360px) {
+  .quick-filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-left: -5px;
+    margin-right: -5px;
+    padding-left: 5px;
+  }
+  
+  .quick-filters::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-btn {
+    flex: 0 0 auto;
   }
 }
